@@ -5,7 +5,7 @@ def solution(d, budget):
     
     # 최소부터 선택 
     # 1. 정렬 후 선택 (그리디)
-    li = d
+    li = d # 원본 리스트도 정렬됨 (같은 리스트를 가리킴)
     li.sort()
     for i in range(len(li)):
         # budget 넘지 않으면 
