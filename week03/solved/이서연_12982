@@ -1,0 +1,20 @@
+def solution(d, budget):
+    answer = 0
+    sum = 0
+    cnt = 0
+    
+    # 최소부터 선택 
+    # 1. 정렬 후 선택 (그리디)
+    li = d
+    li.sort()
+    for i in range(len(li)):
+        # budget 넘지 않으면 
+        sum += li[i]
+        if (sum <= budget) :
+            # result +1
+            cnt += 1
+        # budget 넘으면 
+        if (sum > budget ):
+            # return result 
+            return cnt
+    return cnt
