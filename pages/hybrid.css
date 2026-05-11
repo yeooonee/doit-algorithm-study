@@ -337,12 +337,12 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 .codeview {
   border: 1px solid var(--border); border-top: 0; border-radius: 0 0 10px 10px;
   display: grid; grid-template-columns: 42px 1fr;
-  font-family: 'D2Coding', monospace; font-size: 13px; line-height: 1.65; overflow: hidden;
+  font-family: 'D2Coding', monospace; font-size: 15px; line-height: 1.65; overflow: hidden;
 }
 .codeview .ln { background: #282c34; color: #4b5263; padding: 14px 8px; text-align: right; border-right: 1px solid #3a3f4b; user-select: none; align-self: stretch; }
 .codeview .ln span { display: block; line-height: 1.65; }
 .codeview pre { margin: 0; padding: 0; overflow-x: auto; align-self: stretch; }
-.codeview pre code.hljs { display: block; padding: 14px 18px; border-radius: 0; font-size: 13px; line-height: 1.65; min-height: 100%; font-family: 'D2Coding', monospace !important; }
+.codeview pre code.hljs { display: block; padding: 14px 18px; border-radius: 0; font-size: 15px; line-height: 1.65; min-height: 100%; font-family: 'D2Coding', monospace !important; }
 
 /* misc */
 .empty { padding: 40px; text-align: center; color: var(--ink-3); background: var(--panel); border: 1px dashed var(--border); border-radius: 10px; font-family: var(--mono); font-size: 13px; }
