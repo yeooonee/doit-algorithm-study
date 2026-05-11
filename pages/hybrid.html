@@ -341,9 +341,7 @@ const GH_URL = `https://github.com/${REPO}`;
 // Members (fixed, based on repo)
 const MEMBERS = [
   { name: '김혜원', color: '#4a8a5c' },
-  { name: '서혜린', color: '#2a6fdb' },
   { name: '이서연', color: '#c96442' },
-  { name: '최예은', color: '#8a4a8a' },
 ];
 const _mCache = {};
 function memberOf(filename) {
@@ -476,9 +474,25 @@ function renderCrumb(r) {
 }
 
 // ── sidebar ──
-function renderSide(r, computed) {
+async function renderSide(r, computed) {
   const side = document.getElementById('side');
   const p = parseRoute(r);
+
+  // pre-fetch files for the open folder so we can show them in the tree
+  let openFiles = [];
+  if (p.num && p.folder) {
+    openFiles = await getFiles(p.num, p.folder);
+  }
+
+  let totalFiles = 0;
+  computed.forEach(w => {
+    const n = weekNum(w);
+    // count from cache only (don't trigger extra fetches here)
+    Object.keys(FOLDER_DESC).forEach(fn => {
+      const key = `${n}:${fn}`;
+      if (_fileCache[key]) totalFiles += _fileCache[key].length;
+    });
+  });
 
   let html = `
     <div class="side-section">PAGES <span class="count">1</span></div>
@@ -489,13 +503,12 @@ function renderSide(r, computed) {
         <span class="name">홈</span>
       </div>
     </div>
-    <div class="side-section">WEEKS <span class="count">${computed.length} 주차</span></div>
+    <div class="side-section">WEEKS ${totalFiles ? `<span class="count">${totalFiles} FILES</span>` : ''}</div>
     <div class="tree">`;
 
   computed.forEach(w => {
     const n = weekNum(w);
-    const wkey = weekDir(n);
-    const isOpen = p.num === n && r !== 'home';
+    const isOpen   = p.num === n && r !== 'home';
     const isOnWeek = r === `week:${n}`;
 
     html += `
@@ -507,23 +520,38 @@ function renderSide(r, computed) {
       </div>
       <div class="children">
         ${Object.keys(FOLDER_DESC).map(fn => {
-          const folderRoute = `folder:${n}:${fn}`;
+          const folderRoute  = `folder:${n}:${fn}`;
           const isFolderOpen = r === folderRoute || r.startsWith(`file:${n}:${fn}:`);
           const isFolderOn   = r === folderRoute;
-          const fileRoute = r.startsWith(`file:${n}:${fn}:`) ? r : null;
+          const activeFile   = r.startsWith(`file:${n}:${fn}:`) ? r.split(':').slice(3).join(':') : null;
+          const cachedCount  = (_fileCache[`${n}:${fn}`] || []).length;
+
+          let filesHtml = '';
+          if (isFolderOpen && openFiles.length > 0) {
+            filesHtml = `<div class="children">
+              ${openFiles.map(f => `
+                <div class="row l3 fileRow ${f.name === activeFile ? 'on' : ''}" data-num="${n}" data-folder="${fn}" data-name="${f.name}">
+                  <span class="chev"></span>
+                  <span class="icon">${fileIcon(f.name)}</span>
+                  <span class="name">${f.name}</span>
+                </div>`).join('')}
+            </div>`;
+          } else if (isFolderOpen && openFiles.length === 0) {
+            filesHtml = `<div class="children">
+              <div class="row l3" style="color:var(--mute);pointer-events:none">
+                <span class="chev"></span><span class="name">비어 있음</span>
+              </div>
+            </div>`;
+          }
+
           return `
             <div class="row l2 folderRow ${isFolderOpen?'open':''} ${isFolderOn?'on':''}" data-num="${n}" data-folder="${fn}">
               <span class="chev">▸</span>
               <span class="icon">${isFolderOpen ? ICONS.folderOpen : ICONS.folder}</span>
-              <span class="name">${fn}/</span>
+              <span class="name">${fn}</span>
+              ${cachedCount ? `<span class="badge">${cachedCount}</span>` : ''}
             </div>
-            ${isFolderOpen && fileRoute ? `<div class="children">
-              <div class="row l3 on">
-                <span class="chev"></span>
-                <span class="icon">${fileIcon(fileRoute.split(':')[3])}</span>
-                <span class="name">${fileRoute.split(':')[3]}</span>
-              </div>
-            </div>` : ''}`;
+            ${filesHtml}`;
         }).join('')}
       </div>`;
   });
@@ -536,6 +564,10 @@ function renderSide(r, computed) {
   side.querySelectorAll('.folderRow').forEach(el => el.onclick = e => {
     e.stopPropagation();
     go(`folder:${el.dataset.num}:${el.dataset.folder}`);
+  });
+  side.querySelectorAll('.fileRow').forEach(el => el.onclick = e => {
+    e.stopPropagation();
+    go(`file:${el.dataset.num}:${el.dataset.folder}:${el.dataset.name}`);
   });
 }
 
@@ -756,7 +788,7 @@ async function render() {
 
   renderStrip(computed);
   renderCrumb(route);
-  renderSide(route, computed);
+  await renderSide(route, computed);
 
   const p = parseRoute(route);
 
