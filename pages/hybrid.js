@@ -131,6 +131,18 @@ function timeAgo(d) {
   return `${Math.floor(s/604800)}주 전`;
 }
 
+const FOLDER_ACTION = {
+  summary:  '요약 제출',
+  solved:   '풀이 제출',
+  problem:  '문제 업로드',
+  practice: '연습 코드',
+};
+
+function folderLabel(ww, folder) {
+  const action = FOLDER_ACTION[folder] || folder;
+  return `W${ww} ${action}`;
+}
+
 // ── recent activity (GitHub commits) ──
 async function fetchActivity() {
   try {
@@ -152,11 +164,11 @@ async function fetchActivity() {
         const ww     = prBranch[2];
         const num    = parseInt(ww);
         const mStr   = prBranch[3];
-        const m      = MEMBERS.find(x => mStr.includes(x.name)) || { name: mStr.slice(0,4), color: '#a39681' };
+        const m      = MEMBERS.find(x => mStr.includes(x.name)) || { name: mStr, color: '#a39681' };
         items.push({
           date,
           route: `folder:${num}:${folder}`,
-          label: `${weekDir(num)}/${folder} — 업데이트`,
+          label: folderLabel(ww, folder),
           path:  `week${ww}/${folder}/`,
           icon:  ['summary','problem'].includes(folder) ? 'md' : 'py',
           member: m,
@@ -175,7 +187,7 @@ async function fetchActivity() {
         items.push({
           date,
           route: `file:${num}:${folder}:${file}`,
-          label: file.replace(/\.[^.]+$/, ''),
+          label: `W${ww} ${FOLDER_ACTION[folder] || folder} — ${file.replace(/\.[^.]+$/, '')}`,
           path:  `week${ww}/${folder}/${file}`,
           icon:  file.endsWith('.py') ? 'py' : 'md',
           member: m,
@@ -186,16 +198,18 @@ async function fetchActivity() {
       // docs:/solve: prefix with path hint
       const prefixPath = msg.match(/^(?:docs|solve|fix|chore):\s*(.+)/i);
       if (prefixPath) {
-        const hint = prefixPath[1].trim();
+        const hint   = prefixPath[1].trim();
         const wMatch = hint.match(/week(\d{1,2})/i);
         if (wMatch) {
-          const num = parseInt(wMatch[1]);
-          const m   = { name: c.commit.author.name.slice(0,4), color: '#a39681' };
+          const num  = parseInt(wMatch[1]);
+          const ww   = String(num).padStart(2,'0');
+          const ghName = c.commit.author.name;
+          const m    = MEMBERS.find(x => ghName.includes(x.name)) || { name: ghName, color: '#a39681' };
           items.push({
             date,
             route: `week:${num}`,
             label: hint,
-            path:  `week${String(num).padStart(2,'0')}/`,
+            path:  `week${ww}/`,
             icon:  'md',
             member: m,
           });
