@@ -110,101 +110,101 @@ body { padding-top: 0 !important; }
 .strip-meta b { color: var(--ok); font-size: 14px; font-weight: 700; font-family: var(--mono); }
 
 /* ── layout ── */
-.shell { display: grid; grid-template-columns: 300px 1fr; gap: 0; min-height: calc(100vh - 104px); }
+.shell { display: grid; grid-template-columns: 240px 1fr; gap: 0; min-height: calc(100vh - 104px); }
 
 /* ── sidebar ── */
 .side {
   border-right: 1px solid var(--border); background: var(--panel-2);
-  padding: 12px 0; overflow-y: auto;
+  padding: 8px 0; overflow-y: auto;
   height: calc(100vh - 104px); position: sticky; top: 104px;
 }
 .side::-webkit-scrollbar { width: 3px; }
 .side::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
 .side-section {
-  padding: 6px 16px 4px;
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute);
+  padding: 5px 14px 3px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute);
   display: flex; align-items: center; justify-content: space-between;
 }
 .side-section .count { color: var(--ink-3); font-weight: 500; }
-.tree { padding: 2px 6px 18px; }
+.tree { padding: 1px 4px 12px; }
 .row {
-  display: flex; align-items: center; gap: 6px;
-  padding: 4px 8px; border-radius: 5px; cursor: pointer;
-  font-size: 13px; color: var(--ink-2); user-select: none; line-height: 1.4; min-height: 26px;
+  display: flex; align-items: center; gap: 5px;
+  padding: 3px 7px; border-radius: 4px; cursor: pointer;
+  font-size: 12.5px; color: var(--ink-2); user-select: none; line-height: 1.35; min-height: 22px;
 }
 .row:hover { background: rgba(0,0,0,.045); }
 .row.on { background: rgba(201,100,66,.10); color: var(--ink); }
-.row .chev { width: 12px; color: var(--mute); font-family: var(--mono); font-size: 11px; flex: 0 0 12px; text-align: center; transition: transform .12s; }
+.row .chev { width: 11px; color: var(--mute); font-family: var(--mono); font-size: 10px; flex: 0 0 11px; text-align: center; transition: transform .12s; }
 .row.open > .chev { transform: rotate(90deg); }
-.row .icon { width: 14px; flex: 0 0 14px; display: grid; place-items: center; color: var(--ink-3); }
+.row .icon { width: 13px; flex: 0 0 13px; display: grid; place-items: center; color: var(--ink-3); }
 .row .icon svg { display: block; }
 .row .name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.row .name .num { font-family: var(--mono); font-size: 11.5px; color: var(--mute); margin-right: 2px; }
+.row .name .num { font-family: var(--mono); font-size: 11px; color: var(--mute); margin-right: 2px; }
 .row .badge {
-  font-family: var(--mono); font-size: 10.5px; color: var(--mute);
+  font-family: var(--mono); font-size: 10px; color: var(--mute);
   background: var(--border); border-radius: 99px;
-  padding: 0 7px; line-height: 16px; height: 16px;
+  padding: 0 6px; line-height: 15px; height: 15px;
 }
 .row .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--p1); flex: 0 0 5px; }
 .row[data-phase="2"] .dot { background: var(--p2); }
 .row[data-phase="3"] .dot { background: var(--p3); }
 .row[data-phase="4"] .dot { background: var(--p4); }
-.children { display: none; padding-left: 14px; }
+.children { display: none; padding-left: 12px; }
 .row.open + .children { display: block; }
-.row.l2 { padding-left: 14px; font-size: 12.5px; }
-.row.l3 { padding-left: 14px; font-size: 12.5px; color: var(--ink-3); font-family: var(--mono); min-height: 22px; }
+.row.l2 { padding-left: 12px; font-size: 12px; }
+.row.l3 { padding-left: 12px; font-size: 11.5px; color: var(--ink-3); font-family: var(--mono); min-height: 20px; }
 .row.l3:hover { color: var(--ink); }
 .row.l3.on { color: var(--ink); background: rgba(42,111,219,.10); }
 
 /* ── content ── */
-.main { padding: 24px 36px 60px; max-width: 1100px; }
+.main { padding: 20px 28px 48px; max-width: 1000px; }
 .pagehead {
   display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 24px;
+  gap: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
 }
-.pagehead h1 { font-size: 26px; font-weight: 700; margin: 0 0 6px; letter-spacing: -.01em; line-height: 1.25; }
-.pagehead .lede { color: var(--ink-3); font-size: 14.5px; line-height: 1.55; max-width: 640px; }
+.pagehead h1 { font-size: 22px; font-weight: 700; margin: 0 0 5px; letter-spacing: -.01em; line-height: 1.25; }
+.pagehead .lede { color: var(--ink-3); font-size: 13px; line-height: 1.55; max-width: 580px; }
 .pagehead .pill {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 3px 9px; border-radius: 99px; background: var(--bg); border: 1px solid var(--border);
-  font-size: 11.5px; font-family: var(--mono); color: var(--ink-3); height: 22px;
+  font-size: 11px; font-family: var(--mono); color: var(--ink-3); height: 22px;
 }
 .pagehead .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--p1); }
 .pagehead .meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: 0 0 auto; }
 
 /* home stat cards */
-.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 32px; }
-.card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
-.card .k { font-family: var(--mono); font-size: 10.5px; color: var(--mute); letter-spacing: .12em; text-transform: uppercase; }
-.card .v { font-family: var(--mono); font-size: 28px; font-weight: 700; letter-spacing: -.02em; margin-top: 6px; }
-.card .sub { font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
-.card .bar { margin-top: 10px; height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; }
+.card .k { font-family: var(--mono); font-size: 10px; color: var(--mute); letter-spacing: .12em; text-transform: uppercase; }
+.card .v { font-family: var(--mono); font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin-top: 5px; }
+.card .sub { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+.card .bar { margin-top: 8px; height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
 .card .bar > div { height: 100%; background: var(--accent); border-radius: 99px; }
-.card.now .v { font-size: 18px; line-height: 1.3; }
+.card.now .v { font-size: 16px; line-height: 1.3; }
 .card.now .v .wk { color: var(--accent); margin-right: 8px; }
 
 h2.sec {
-  font-size: 13px; font-family: var(--mono); letter-spacing: .14em;
+  font-size: 12px; font-family: var(--mono); letter-spacing: .14em;
   text-transform: uppercase; color: var(--mute);
-  margin: 32px 0 12px; display: flex; align-items: center; gap: 10px;
+  margin: 24px 0 10px; display: flex; align-items: center; gap: 10px;
 }
 h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
 /* feed */
 .feed { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
 .feed-row {
-  display: grid; grid-template-columns: 74px 1fr auto;
-  gap: 14px; align-items: center; padding: 12px 18px;
+  display: grid; grid-template-columns: 60px 1fr auto;
+  gap: 12px; align-items: center; padding: 9px 16px;
   border-top: 1px solid var(--border); cursor: pointer;
 }
 .feed-row:first-child { border-top: 0; }
 .feed-row:hover { background: var(--panel-2); }
-.feed-row .when { font-family: var(--mono); font-size: 11.5px; color: var(--mute); }
-.feed-row .what { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.feed-row .what .icon { width: 16px; flex: 0 0 16px; color: var(--ink-3); }
-.feed-row .what .ttl { font-size: 13.5px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.feed-row .what .path { font-family: var(--mono); font-size: 11.5px; color: var(--mute); margin-left: 6px; }
-.feed-row .by { font-size: 12px; color: var(--ink-3); display: flex; align-items: center; gap: 6px; }
+.feed-row .when { font-family: var(--mono); font-size: 11px; color: var(--mute); }
+.feed-row .what { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.feed-row .what .icon { width: 14px; flex: 0 0 14px; color: var(--ink-3); }
+.feed-row .what .ttl { font-size: 13px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.feed-row .what .path { font-family: var(--mono); font-size: 11px; color: var(--mute); margin-left: 5px; }
+.feed-row .by { font-size: 11.5px; color: var(--ink-3); display: flex; align-items: center; gap: 5px; }
 .avatar {
   width: 18px; height: 18px; border-radius: 50%;
   display: inline-grid; place-items: center;
@@ -212,36 +212,36 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 }
 
 /* week page */
-.wk-head { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 18px; }
+.wk-head { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; margin-bottom: 16px; }
 .wk-num {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute);
+  font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute);
   display: flex; flex-direction: column; align-items: center;
   border: 1px solid var(--border); border-radius: 10px;
-  padding: 10px 14px; background: var(--panel); min-width: 84px;
+  padding: 8px 12px; background: var(--panel); min-width: 72px;
 }
-.wk-num b { font-size: 32px; color: var(--ink); font-weight: 700; letter-spacing: -.02em; }
-.wk-num .date { margin-top: 4px; font-size: 11px; color: var(--ink-3); letter-spacing: 0; text-transform: none; }
-.wk-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.wk-num b { font-size: 26px; color: var(--ink); font-weight: 700; letter-spacing: -.02em; }
+.wk-num .date { margin-top: 3px; font-size: 10.5px; color: var(--ink-3); letter-spacing: 0; text-transform: none; }
+.wk-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
 .wk-tag {
-  font-family: var(--mono); font-size: 11px;
+  font-family: var(--mono); font-size: 10.5px;
   background: var(--bg); border: 1px solid var(--border); border-radius: 99px;
-  padding: 2px 9px; color: var(--ink-3);
+  padding: 1px 8px; color: var(--ink-3);
 }
 
 /* folder grid */
-.folder-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; margin-top: 8px; }
+.folder-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 6px; }
 .folder-card {
   background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
-  padding: 14px 16px; cursor: pointer;
+  padding: 12px 14px; cursor: pointer;
   transition: border-color .12s;
 }
 .folder-card:hover { border-color: var(--ink-3); }
-.folder-card .fh { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.folder-card .fh { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
 .folder-card .fh .icon { color: var(--ink-3); }
-.folder-card .fh .name { font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 500; }
-.folder-card .fh .count { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--mute); }
+.folder-card .fh .name { font-family: var(--mono); font-size: 12.5px; color: var(--ink); font-weight: 500; }
+.folder-card .fh .count { margin-left: auto; font-family: var(--mono); font-size: 10.5px; color: var(--mute); }
 .folder-card ul { margin: 0; padding: 0; list-style: none; }
-.folder-card li { padding: 3px 0; font-size: 12.5px; color: var(--ink-2); display: flex; gap: 8px; align-items: center; font-family: var(--mono); }
+.folder-card li { padding: 2px 0; font-size: 12px; color: var(--ink-2); display: flex; gap: 7px; align-items: center; font-family: var(--mono); }
 .folder-card li .fi { color: var(--mute); width: 12px; flex: 0 0 12px; }
 .folder-card li .fn { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
@@ -317,7 +317,7 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
     </div>
   </div>
   <div class="strip">
-    <div class="strip-label">2026 시즌 1<b id="stripTitle">18주 커리큘럼</b></div>
+    <div class="strip-label">2026 시즌 1<b id="stripTitle">커리큘럼</b></div>
     <div class="strip-track" id="stripTrack"></div>
     <div class="strip-meta">진척률 <b id="stripPct">—</b></div>
   </div>
@@ -461,7 +461,9 @@ function renderCrumb(r) {
   const sep = `<span class="sep">/</span>`;
   const here = label => `<span class="here">${label}</span>`;
 
-  if (r === 'home') { c.innerHTML = here('홈'); return; }
+  if (r === 'home')       { c.innerHTML = here('홈'); return; }
+  if (r === 'curriculum') { c.innerHTML = a('홈','home') + sep + here('커리큘럼'); c.querySelectorAll('[data-go]').forEach(el=>el.onclick=e=>{e.preventDefault();go(el.dataset.go);}); return; }
+  if (r === 'problems')   { c.innerHTML = a('홈','home') + sep + here('문제 모음'); c.querySelectorAll('[data-go]').forEach(el=>el.onclick=e=>{e.preventDefault();go(el.dataset.go);}); return; }
 
   if (parts[0] === 'week') {
     c.innerHTML = a('홈','home') + sep + here(`week${String(parts[1]).padStart(2,'0')}`);
@@ -494,14 +496,21 @@ async function renderSide(r, computed) {
     });
   });
 
+  const PAGES = [
+    { route: 'home',       label: '홈' },
+    { route: 'curriculum', label: '커리큘럼' },
+    { route: 'problems',   label: '문제 모음' },
+  ];
+
   let html = `
-    <div class="side-section">PAGES <span class="count">1</span></div>
+    <div class="side-section">PAGES <span class="count">${PAGES.length}</span></div>
     <div class="tree">
-      <div class="row pageRow ${r==='home'?'on':''}" data-route="home">
-        <span class="chev"></span>
-        <span class="icon">${ICONS.file}</span>
-        <span class="name">홈</span>
-      </div>
+      ${PAGES.map(pg => `
+        <div class="row pageRow ${r===pg.route?'on':''}" data-route="${pg.route}">
+          <span class="chev"></span>
+          <span class="icon">${ICONS.file}</span>
+          <span class="name">${pg.label}</span>
+        </div>`).join('')}
     </div>
     <div class="side-section">WEEKS ${totalFiles ? `<span class="count">${totalFiles} FILES</span>` : ''}</div>
     <div class="tree">`;
@@ -612,16 +621,58 @@ async function renderHome(computed) {
         const n = weekNum(w);
         const past = w.status === 'done';
         const now  = w.status === 'current';
-        const statusLabel = now ? '· 이번 주' : past ? '' : '· 예정';
-        return `<div class="folder-card" data-go="week:${n}" style="opacity:${past||now?1:.55}">
+        const fileCount = Object.keys(FOLDER_DESC).reduce((s,fn) => s + ((_fileCache[`${n}:${fn}`]||[]).length), 0);
+        const statusSuffix = now ? ' · 이번 주' : past ? '' : ' · 예정';
+        return `<div class="folder-card" data-go="week:${n}" style="opacity:${past||now?1:.5}">
           <div class="fh">
             <span class="icon">${ICONS.folder}</span>
             <span class="name">${weekDir(n)}</span>
+            ${fileCount ? `<span class="count">${fileCount} files</span>` : ''}
           </div>
           <div style="font-size:13px;color:var(--ink);font-weight:500;margin-bottom:2px">${w.title}</div>
-          <div style="font-size:11.5px;color:var(--mute);font-family:var(--mono)">${w.date}${statusLabel}</div>
+          <div style="font-size:11px;color:var(--mute);font-family:var(--mono)">${w.chapter.split(' · ')[0]} · ${w.date}${statusSuffix}</div>
         </div>`;
       }).join('')}
+    </div>`;
+  bindGo();
+}
+
+function renderCurriculum(computed) {
+  const { phases } = { phases: [{id:1,name:'기초 다지기'},{id:2,name:'핵심 자료구조'},{id:3,name:'트리 & 고급 구조'},{id:4,name:'마무리 & 응용'}] };
+  document.getElementById('main').innerHTML = `
+    <div class="pagehead">
+      <div><h1>커리큘럼</h1><div class="lede">18주 전체 일정. 주차를 클릭하면 해당 주로 이동합니다.</div></div>
+    </div>
+    <div class="folder-grid" style="grid-template-columns:repeat(3,1fr)">
+      ${computed.map(w => {
+        const n = weekNum(w);
+        const past = w.status === 'done', now = w.status === 'current';
+        return `<div class="folder-card" data-go="week:${n}" style="opacity:${past||now?1:.5}">
+          <div class="fh"><span class="icon">${ICONS.folder}</span><span class="name">${weekDir(n)}</span></div>
+          <div style="font-size:12.5px;color:var(--ink);font-weight:500;margin-bottom:2px">${w.title}</div>
+          <div style="font-size:11px;color:var(--mute);font-family:var(--mono)">${w.date}${now?' · 이번 주':''}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  bindGo();
+}
+
+function renderProblems(computed) {
+  document.getElementById('main').innerHTML = `
+    <div class="pagehead">
+      <div><h1>문제 모음</h1><div class="lede">주차별 solved/ 폴더에서 제출 풀이를 확인할 수 있습니다.</div></div>
+    </div>
+    <div class="feed">
+      ${computed.filter(w => w.status === 'done' || w.status === 'current').map(w => {
+        const n = weekNum(w);
+        const cached = _fileCache[`${n}:solved`] || [];
+        if (!cached.length) return '';
+        return cached.map(f => `<div class="feed-row" data-go="file:${n}:solved:${f.name}">
+          <div class="when">${weekDir(n)}</div>
+          <div class="what"><span class="icon">${ICONS.py}</span><span class="ttl">${f.name.replace(/\.py$/,'')}</span><span class="path">${weekDir(n)}/solved/${f.name}</span></div>
+          <div class="by"><span class="avatar" style="background:${memberOf(f.name).color}">${memberOf(f.name).name[0]}</span>${memberOf(f.name).name}</div>
+        </div>`).join('');
+      }).join('')||'<div style="padding:32px;text-align:center;color:var(--mute);font-family:var(--mono);font-size:13px">먼저 주차를 방문하면 파일 목록이 로드됩니다.</div>'}
     </div>`;
   bindGo();
 }
@@ -794,6 +845,10 @@ async function render() {
 
   if (route === 'home' || p.view === 'home') {
     await renderHome(computed);
+  } else if (route === 'curriculum') {
+    renderCurriculum(computed);
+  } else if (route === 'problems') {
+    renderProblems(computed);
   } else if (p.view === 'week') {
     await renderWeek(p.num, computed);
   } else if (p.view === 'folder') {
