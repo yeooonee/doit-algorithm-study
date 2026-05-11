@@ -620,7 +620,23 @@ async function renderFile(num, folderName, fileName, computed) {
   if (err) {
     body = `<div style="border:1px solid var(--border);border-top:0;border-radius:0 0 10px 10px;background:var(--panel)"><div class="empty">파일을 불러올 수 없습니다.</div></div>`;
   } else if (isMd) {
-    body = `<article class="reader">${marked.parse(text)}</article>`;
+    const tmp = document.createElement('div');
+    tmp.innerHTML = marked.parse(text);
+    const headings = [];
+    tmp.querySelectorAll('h1, h2, h3').forEach((h, i) => {
+      const id = `toc-${i}`;
+      h.id = id;
+      headings.push({ id, level: parseInt(h.tagName[1]), text: h.textContent });
+    });
+    const tocHtml = headings.length < 2 ? '' : `
+      <aside class="toc" id="fileToc">
+        <div class="toc-title">목차</div>
+        ${headings.map(h => `<a class="toc-item h${h.level}" data-id="${h.id}" href="#${h.id}">${h.text}</a>`).join('')}
+      </aside>`;
+    body = `<div class="file-layout">
+      <article class="reader">${tmp.innerHTML}</article>
+      ${tocHtml}
+    </div>`;
   } else {
     const lang = ext === 'py' ? 'python' : 'plaintext';
     const highlighted = (typeof hljs !== 'undefined')
@@ -635,6 +651,113 @@ async function renderFile(num, folderName, fileName, computed) {
 
   document.getElementById('main').innerHTML = filebar + body;
   bindGo();
+
+  if (isMd && !err) {
+    const toc = document.getElementById('fileToc');
+    if (toc) {
+      toc.querySelectorAll('.toc-item').forEach(a => {
+        a.onclick = e => {
+          e.preventDefault();
+          document.getElementById(a.dataset.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+      });
+      const items = toc.querySelectorAll('.toc-item');
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            items.forEach(a => a.classList.toggle('active', a.dataset.id === en.target.id));
+          }
+        });
+      }, { rootMargin: '-10% 0px -80% 0px' });
+      document.querySelectorAll('.reader h1, .reader h2, .reader h3').forEach(h => obs.observe(h));
+    }
+  }
+}
+
+// ── search ──
+let _searchInit = false;
+function initSearch(computed) {
+  if (_searchInit) return;
+  _searchInit = true;
+
+  const input = document.getElementById('searchInput');
+  if (!input) return;
+
+  let drop = null;
+  let focusIdx = -1;
+
+  function buildResults(q) {
+    if (!q) return [];
+    const lq = q.toLowerCase();
+    const results = [];
+
+    for (const w of computed) {
+      const n = weekNum(w);
+      if (`${w.num} ${w.title} ${w.chapter}`.toLowerCase().includes(lq)) {
+        results.push({ label: w.title, sub: `${w.num} · ${w.date}`, route: `week:${n}`, icon: 'folder' });
+      }
+    }
+
+    for (const [key, files] of Object.entries(_fileCache)) {
+      const [num, folder] = key.split(':');
+      for (const f of files) {
+        if (f.name.toLowerCase().includes(lq)) {
+          results.push({
+            label: f.name.replace(/\.[^.]+$/, ''),
+            sub: `week${String(num).padStart(2,'0')}/${folder}/`,
+            route: `file:${num}:${folder}:${f.name}`,
+            icon: f.name.endsWith('.py') ? 'py' : 'md',
+          });
+        }
+      }
+    }
+
+    return results.slice(0, 8);
+  }
+
+  function renderDrop(results) {
+    if (drop) drop.remove();
+    drop = null;
+    focusIdx = -1;
+    if (!results.length) return;
+
+    drop = document.createElement('div');
+    drop.className = 'search-drop';
+    drop.innerHTML = results.map(r => `
+      <div class="search-item">
+        <span class="search-icon">${ICONS[r.icon] || ICONS.file}</span>
+        <span class="search-label">${r.label}</span>
+        <span class="search-sub">${r.sub}</span>
+      </div>`).join('');
+
+    input.closest('.search').appendChild(drop);
+    drop.querySelectorAll('.search-item').forEach((el, i) => {
+      el.onmousedown = e => { e.preventDefault(); go(results[i].route); hideDrop(); input.value = ''; };
+    });
+  }
+
+  function hideDrop() { if (drop) { drop.remove(); drop = null; } focusIdx = -1; }
+
+  function moveFocus(dir) {
+    if (!drop) return;
+    const items = drop.querySelectorAll('.search-item');
+    items.forEach(el => el.classList.remove('focused'));
+    focusIdx = Math.max(0, Math.min(items.length - 1, focusIdx + dir));
+    items[focusIdx]?.classList.add('focused');
+  }
+
+  input.addEventListener('input', () => renderDrop(buildResults(input.value.trim())));
+  input.addEventListener('focus', () => { if (input.value.trim()) renderDrop(buildResults(input.value.trim())); });
+  input.addEventListener('blur', () => hideDrop());
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { hideDrop(); input.value = ''; input.blur(); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); moveFocus(1); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); moveFocus(-1); }
+    if (e.key === 'Enter' && drop) {
+      const focused = drop.querySelector('.search-item.focused');
+      focused?.dispatchEvent(new MouseEvent('mousedown'));
+    }
+  });
 }
 
 function bindGo() {
@@ -650,6 +773,7 @@ async function render() {
 
   renderStrip(computed);
   renderCrumb(route);
+  initSearch(computed);
   await renderSide(route, computed);
 
   const p = parseRoute(route);
