@@ -8,7 +8,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/python.min.js"></script>
 <style>
+@font-face {
+  font-family: 'Ria';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/RiaSans-ExtraBold.woff2') format('woff2');
+  font-weight: normal;
+  font-display: swap;
+}
 :root {
   --bg:       #f7f5f0;
   --panel:    #ffffff;
@@ -30,6 +39,7 @@
   --mono: "JoseonGulim", "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --sans: "JoseonGulim", "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
   --serif: "JoseonGulim", "Gowun Batang", "Noto Serif KR", "Nanum Myeongjo", Georgia, serif;
+  --display: "Ria", "JoseonGulim", sans-serif;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
@@ -162,7 +172,7 @@ body { padding-top: 0 !important; }
   display: flex; align-items: flex-start; justify-content: space-between;
   gap: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
 }
-.pagehead h1 { font-size: 22px; font-weight: 700; margin: 0 0 5px; letter-spacing: -.01em; line-height: 1.25; }
+.pagehead h1 { font-family: var(--display); font-size: 28px; font-weight: 700; margin: 0 0 5px; letter-spacing: -.01em; line-height: 1.25; }
 .pagehead .lede { color: var(--ink-3); font-size: 13px; line-height: 1.55; max-width: 580px; }
 .pagehead .pill {
   display: inline-flex; align-items: center; gap: 6px;
@@ -184,7 +194,7 @@ body { padding-top: 0 !important; }
 .card.now .v .wk { color: var(--accent); margin-right: 8px; }
 
 h2.sec {
-  font-size: 12px; font-family: var(--mono); letter-spacing: .14em;
+  font-size: 12px; font-family: var(--display); letter-spacing: .14em;
   text-transform: uppercase; color: var(--mute);
   margin: 24px 0 10px; display: flex; align-items: center; gap: 10px;
 }
@@ -209,6 +219,10 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
   width: 18px; height: 18px; border-radius: 50%;
   display: inline-grid; place-items: center;
   font-size: 10px; color: #fff; font-weight: 600; font-family: var(--mono);
+}
+.avatar.pill {
+  width: auto; height: 22px; border-radius: 100px;
+  padding: 0 8px; font-size: 11px;
 }
 
 /* week page */
@@ -262,8 +276,8 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
   padding: 36px 56px 48px;
   font-family: var(--serif); font-size: 17px; line-height: 1.85; color: var(--ink); max-width: 780px;
 }
-.reader h1 { font-family: var(--sans); font-size: 28px; font-weight: 700; line-height: 1.25; letter-spacing: -.015em; margin: 0 0 10px; }
-.reader h2 { font-family: var(--sans); font-size: 20px; font-weight: 700; margin: 40px 0 10px; letter-spacing: -.005em; padding-top: 10px; border-top: 1px solid var(--border); }
+.reader h1 { font-family: var(--display); font-size: 34px; font-weight: 700; line-height: 1.25; letter-spacing: -.015em; margin: 0 0 10px; }
+.reader h2 { font-family: var(--display); font-size: 24px; font-weight: 700; margin: 40px 0 10px; letter-spacing: -.005em; padding-top: 10px; border-top: 1px solid var(--border); }
 .reader h3 { font-family: var(--sans); font-size: 16px; font-weight: 600; margin: 28px 0 8px; color: var(--ink-2); }
 .reader p { margin: 0 0 16px; }
 .reader p > strong, .reader li > strong { background: var(--hl); padding: 0 3px; border-radius: 3px; font-weight: 700; }
@@ -284,13 +298,14 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
 /* code viewer */
 .codeview {
-  background: #1f1a14; border: 1px solid var(--border); border-top: 0; border-radius: 0 0 10px 10px;
-  color: #e8e2d4; display: grid; grid-template-columns: 42px 1fr;
+  border: 1px solid var(--border); border-top: 0; border-radius: 0 0 10px 10px;
+  display: grid; grid-template-columns: 42px 1fr;
   font-family: var(--mono); font-size: 13px; line-height: 1.65; overflow: hidden;
 }
-.codeview .ln { background: #181410; color: #6a6055; padding: 14px 8px 14px 0; text-align: right; border-right: 1px solid #2b251c; user-select: none; }
-.codeview .ln span { display: block; }
-.codeview pre { margin: 0; padding: 14px 18px; overflow-x: auto; white-space: pre; }
+.codeview .ln { background: #282c34; color: #4b5263; padding: 14px 8px; text-align: right; border-right: 1px solid #3a3f4b; user-select: none; align-self: stretch; }
+.codeview .ln span { display: block; line-height: 1.65; }
+.codeview pre { margin: 0; padding: 0; overflow-x: auto; align-self: stretch; }
+.codeview pre code.hljs { display: block; padding: 14px 18px; border-radius: 0; font-size: 13px; line-height: 1.65; min-height: 100%; }
 
 /* misc */
 .empty { padding: 40px; text-align: center; color: var(--ink-3); background: var(--panel); border: 1px dashed var(--border); border-radius: 10px; font-family: var(--mono); font-size: 13px; }
@@ -347,8 +362,8 @@ const _mCache = {};
 function memberOf(filename) {
   const base = filename.replace(/\.[^.]+$/, '');
   if (!_mCache[base]) {
-    const idx = Object.keys(_mCache).length % MEMBERS.length;
-    _mCache[base] = MEMBERS[idx];
+    const matched = MEMBERS.find(m => base.includes(m.name));
+    _mCache[base] = matched || { name: base, color: '#a39681' };
   }
   return _mCache[base];
 }
@@ -699,7 +714,7 @@ async function renderHome(computed) {
       <div class="card">
         <div class="k">Members</div>
         <div class="v">2</div>
-        <div class="sub">${MEMBERS.map(m=>`<span class="avatar" style="background:${m.color}">${m.name}</span>`).join(' ')}</div>
+        <div class="sub">${MEMBERS.map(m=>`<span class="avatar pill" style="background:${m.color}">${m.name}</span>`).join(' ')}</div>
       </div>
     </div>
     <h2 class="sec">Recent activity</h2>
@@ -930,11 +945,14 @@ async function renderFile(num, folderName, fileName, computed) {
   } else if (isMd) {
     body = `<article class="reader">${marked.parse(text)}</article>`;
   } else {
-    const esc = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const lang = ext === 'py' ? 'python' : 'plaintext';
+    const highlighted = (typeof hljs !== 'undefined')
+      ? hljs.highlight(text, { language: lang }).value
+      : text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     const lineNums = text.split('\n').map((_,i)=>`<span>${i+1}</span>`).join('');
     body = `<div class="codeview">
       <div class="ln">${lineNums}</div>
-      <pre>${esc}</pre>
+      <pre><code class="hljs language-${lang}">${highlighted}</code></pre>
     </div>`;
   }
 
