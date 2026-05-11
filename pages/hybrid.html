@@ -7,288 +7,519 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
-  @font-face {
-    font-family: 'JoseonGulim';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGu.woff') format('woff');
-    font-weight: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Pretendard Variable';
-    font-weight: 45 920;
-    font-style: normal;
-    font-display: swap;
-    src: url('./web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
-  }
-  html { font-family: 'JoseonGulim', 'Pretendard Variable', sans-serif; }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #0d0f14; --surface: #151820; --surface2: #1c2030;
-    --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
-    --accent: #7bffc0; --accent2: #5bd4f0; --accent3: #f0b45b;
-    --text: #e8eaf0; --muted: #7a7f8e;
-    --mono: 'Space Mono', monospace; --sans: 'Pretendard Variable', sans-serif;
-    --nav-h: 52px;
-  }
+@font-face {
+  font-family: 'JoseonGulim';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGu.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('./web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+}
+html { font-family: 'JoseonGulim', 'Pretendard Variable', sans-serif; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: var(--bg); color: var(--text);
-    font-family: var(--sans);
-    overflow: hidden;
-  }
+:root {
+  --nav-h: 52px;
+  --top-h: 40px;
+  --tl-h: 44px;
+  --sb-w: 220px;
+  --status-h: 30px;
+  --top-bg: #16171f;
+  --sb-bg: #f4f5f7;
+  --content-bg: #ffffff;
+  --border: #e5e7eb;
+  --border-dark: #d1d5db;
+  --text: #111827;
+  --muted: #6b7280;
+  --muted2: #9ca3af;
+  --accent: #16c995;
+  --accent2: #5b8af0;
+  --accent3: #f0a14e;
+  --accent4: #f07b7b;
+  --done-color: #22c55e;
+  --current-color: #6366f1;
+  --mono: 'Space Mono', monospace;
+  --sans: 'Pretendard Variable', 'JoseonGulim', sans-serif;
+}
 
-  .grid-bg {
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(123,255,192,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(123,255,192,0.03) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events: none; z-index: 0;
-  }
+body {
+  background: var(--content-bg);
+  color: var(--text);
+  font-family: var(--sans);
+  overflow: hidden;
+}
 
-  /* ── Layout ── */
-  .layout {
-    position: fixed;
-    top: var(--nav-h); left: 0; right: 0; bottom: 0;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: 220px 1fr;
-  }
+/* ── Top Bar ── */
+.top-bar {
+  position: fixed;
+  top: var(--nav-h); left: 0; right: 0;
+  height: var(--top-h);
+  background: var(--top-bg);
+  display: flex; align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+  z-index: 90;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.top-icon {
+  font-family: var(--mono);
+  font-size: 13px; font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: calc(var(--sb-w) - 28px);
+  letter-spacing: 0.05em;
+}
+.top-breadcrumb {
+  display: flex; align-items: center; gap: 3px;
+  font-family: var(--mono); font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  flex: 1; overflow: hidden;
+  white-space: nowrap;
+}
+.top-breadcrumb a {
+  color: rgba(255,255,255,0.35);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.top-breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+.top-breadcrumb .bc-sep { opacity: 0.3; margin: 0 2px; }
+.top-breadcrumb .bc-cur { color: rgba(255,255,255,0.65); }
+.top-search {
+  display: flex; align-items: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 5px;
+  padding: 0 9px; height: 24px; gap: 5px;
+  flex-shrink: 0;
+}
+.top-search input {
+  background: none; border: none; outline: none;
+  font-family: var(--mono); font-size: 10px;
+  color: rgba(255,255,255,0.65);
+  width: 110px;
+}
+.top-search input::placeholder { color: rgba(255,255,255,0.25); }
+.top-search-icon { color: rgba(255,255,255,0.25); font-size: 12px; }
+.top-progress {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+}
 
-  /* ── Tree Panel ── */
-  .tree-panel {
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    overflow-y: auto;
-    padding: 12px 0 24px;
-  }
-  .tree-panel::-webkit-scrollbar { width: 3px; }
-  .tree-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+/* ── Week Timeline ── */
+.week-timeline {
+  position: fixed;
+  top: calc(var(--nav-h) + var(--top-h));
+  left: 0; right: 0;
+  height: var(--tl-h);
+  background: var(--top-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex; align-items: center;
+  padding: 0 14px 0 calc(var(--sb-w) + 14px);
+  z-index: 89;
+  overflow: hidden;
+}
+.tl-segments {
+  display: flex; align-items: flex-end; gap: 3px;
+  flex: 1; height: 100%; padding: 8px 0;
+}
+.tl-seg {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  gap: 3px; flex: 1; cursor: pointer;
+  padding: 4px 1px 2px;
+  border-radius: 4px;
+  transition: background 0.15s;
+  height: 100%;
+}
+.tl-seg:hover { background: rgba(255,255,255,0.06); }
+.tl-seg-bar {
+  height: 5px; width: 100%;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.1);
+}
+.tl-seg.done    .tl-seg-bar { background: var(--done-color); }
+.tl-seg.current .tl-seg-bar { background: var(--current-color); }
+.tl-seg-num {
+  font-family: var(--mono); font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  line-height: 1;
+}
+.tl-seg.done    .tl-seg-num { color: rgba(34,197,94,0.6); }
+.tl-seg.current .tl-seg-num { color: rgba(99,102,241,0.9); font-weight: 700; }
 
-  .tree-label {
-    font-family: var(--mono); font-size: 10px; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.12em;
-    padding: 0 16px 10px;
-  }
+/* ── Main Layout ── */
+.main-layout {
+  position: fixed;
+  top: calc(var(--nav-h) + var(--top-h) + var(--tl-h));
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+}
+.main-layout.has-status { bottom: var(--status-h); }
 
-  .tree-week { cursor: pointer; }
+/* ── Sidebar ── */
+.sidebar {
+  width: var(--sb-w);
+  flex-shrink: 0;
+  background: var(--sb-bg);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 8px 0 24px;
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 2px; }
 
-  .tree-week-row {
-    display: flex; align-items: center; gap: 7px;
-    padding: 7px 16px;
-    font-family: var(--mono); font-size: 11px; color: var(--muted);
-    user-select: none;
-    transition: background 0.15s, color 0.15s;
-  }
-  .tree-week-row:hover { background: var(--surface2); color: var(--text); }
-  .tree-week-row.active { color: var(--accent); }
-  .tree-week-row .tw-num { flex-shrink: 0; width: 32px; }
-  .tree-week-row .tw-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0.75; }
-  .tree-week-row .tw-chev { flex-shrink: 0; font-size: 9px; transition: transform 0.15s; opacity: 0.5; }
-  .tree-week.open .tw-chev { transform: rotate(90deg); }
+.sb-label {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  color: var(--muted2); text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 10px 14px 5px;
+}
+.sb-page-link {
+  display: flex; align-items: center; gap: 7px;
+  padding: 5px 14px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+.sb-page-link:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+.sb-page-link.active { color: var(--accent); background: rgba(22,201,149,0.07); }
+.sb-page-icon { font-size: 12px; }
 
-  .tree-subrows { display: none; }
-  .tree-week.open .tree-subrows { display: block; }
+.sb-divider { height: 1px; background: var(--border); margin: 6px 0; }
 
-  .tree-sub-row {
-    display: flex; align-items: center; gap: 6px;
-    padding: 5px 16px 5px 38px;
-    font-family: var(--mono); font-size: 11px; color: var(--muted);
-    text-decoration: none;
-    transition: background 0.15s, color 0.15s;
-  }
-  .tree-sub-row:hover { background: var(--surface2); color: var(--text); }
-  .tree-sub-row.active { color: var(--accent2); background: rgba(91,212,240,0.06); }
-  .tree-sub-row .sub-icon { opacity: 0.5; }
+.sb-week { cursor: pointer; }
+.sb-week-row {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 14px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  user-select: none;
+  transition: background 0.15s, color 0.15s;
+}
+.sb-week-row:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+.sb-week-row.active { color: var(--text); }
+.sb-week-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(0,0,0,0.15);
+}
+.sb-week-dot.done    { background: var(--done-color); }
+.sb-week-dot.current { background: var(--current-color); }
+.sb-week-num  { flex-shrink: 0; width: 26px; font-size: 10px; color: var(--muted2); }
+.sb-week-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.sb-week-chev  { flex-shrink: 0; font-size: 8px; transition: transform 0.15s; color: var(--muted2); }
+.sb-week.open .sb-week-chev { transform: rotate(90deg); }
 
-  /* ── Content Panel ── */
-  .content-panel {
-    overflow-y: auto;
-    padding: 28px 36px 60px;
-    background: var(--bg);
-  }
-  .content-panel::-webkit-scrollbar { width: 5px; }
-  .content-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+.sb-subrows { display: none; }
+.sb-week.open .sb-subrows { display: block; }
+.sb-sub-row {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 14px 4px 34px;
+  font-family: var(--mono); font-size: 10px; color: var(--muted2);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.sb-sub-row:hover { background: rgba(0,0,0,0.04); color: var(--muted); }
+.sb-sub-row.active { color: var(--accent2); }
 
-  /* ── Breadcrumb ── */
-  .breadcrumb {
-    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-    font-family: var(--mono); font-size: 11px; color: var(--muted);
-    margin-bottom: 22px;
-  }
-  .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
-  .breadcrumb a:hover { color: var(--text); }
-  .breadcrumb .bc-sep { opacity: 0.4; }
-  .breadcrumb .bc-cur { color: var(--text); }
+/* ── Content Panel ── */
+.content-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--content-bg);
+  padding: 24px 32px 40px;
+}
+.content-panel::-webkit-scrollbar { width: 5px; }
+.content-panel::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 3px; }
 
-  /* ── Home ── */
-  .home-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--mono); font-size: 11px; color: var(--accent);
-    border: 1px solid rgba(123,255,192,0.25);
-    padding: 5px 14px; border-radius: 100px; margin-bottom: 16px;
-  }
-  .home-tag::before {
-    content: ''; width: 6px; height: 6px;
-    background: var(--accent); border-radius: 50%;
-    animation: blink 1.4s ease infinite;
-  }
-  .home-title {
-    font-family: var(--mono); font-size: clamp(20px, 2.5vw, 28px);
-    font-weight: 700; line-height: 1.3; margin-bottom: 6px;
-  }
-  .home-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-  .hl1 { color: var(--accent); }
-  .hl2 { color: var(--accent2); }
+/* ── Status Bar ── */
+.status-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--status-h);
+  background: var(--top-bg);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  display: none; align-items: center;
+  padding: 0 14px; gap: 14px;
+  z-index: 90;
+}
+.status-bar.visible { display: flex; }
+.sb-stat {
+  font-family: var(--mono); font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  display: flex; align-items: center; gap: 4px;
+}
+.sb-stat strong { color: rgba(255,255,255,0.55); font-weight: 400; }
+.sb-spacer { flex: 1; }
 
-  /* ── Strip rows (home week list) ── */
-  .week-strip { display: flex; flex-direction: column; gap: 5px; }
-  .strip-row {
-    display: grid;
-    grid-template-columns: 50px 1fr 96px 76px;
-    align-items: center; gap: 10px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 13px 18px;
-    text-decoration: none; color: inherit;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .strip-row:hover { border-color: var(--border2); background: var(--surface2); }
-  .strip-row.current { border-color: rgba(123,255,192,0.3); }
-  .sr-num { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-  .sr-body .sr-title { font-size: 14px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px; }
-  .sr-body .sr-chap { font-family: var(--mono); font-size: 11px; color: var(--accent2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .sr-date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-  .sr-badge { display: flex; justify-content: flex-end; }
+/* ── Content Breadcrumb ── */
+.breadcrumb {
+  display: flex; align-items: center; gap: 3px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 11px; color: var(--muted2);
+  margin-bottom: 18px;
+}
+.breadcrumb a { color: var(--muted2); text-decoration: none; transition: color 0.15s; }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .bc-sep { opacity: 0.4; margin: 0 1px; }
+.breadcrumb .bc-cur { color: var(--muted); }
 
-  /* ── Status Badge ── */
-  .badge {
-    font-family: var(--mono); font-size: 10px; font-weight: 700;
-    padding: 3px 10px; border-radius: 100px; border: 1px solid; white-space: nowrap;
-  }
-  .badge-done     { color: var(--muted);   border-color: rgba(122,127,142,0.3); background: rgba(122,127,142,0.07); }
-  .badge-current  { color: var(--accent);  border-color: rgba(123,255,192,0.4); background: rgba(123,255,192,0.1); }
-  .badge-upcoming { color: var(--accent2); border-color: rgba(91,212,240,0.25); background: rgba(91,212,240,0.06); }
+/* ── Home ── */
+.home-hero { margin-bottom: 24px; }
+.home-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 10px; color: var(--accent);
+  border: 1px solid rgba(22,201,149,0.3);
+  padding: 3px 10px; border-radius: 100px; margin-bottom: 12px;
+}
+.home-tag::before {
+  content: ''; width: 5px; height: 5px;
+  background: var(--accent); border-radius: 50%;
+  animation: blink 1.4s ease infinite;
+}
+.home-title {
+  font-family: var(--mono); font-size: clamp(17px, 2vw, 24px);
+  font-weight: 700; line-height: 1.4; color: var(--text);
+  margin-bottom: 5px;
+}
+.home-sub { font-size: 12px; color: var(--muted); }
+.hl1 { color: var(--accent); }
+.hl2 { color: var(--accent2); }
 
-  /* ── Week View (folder cards) ── */
-  .view-title {
-    font-family: var(--mono); font-size: 18px; font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .view-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+.stat-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--sb-bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+}
+.stat-label {
+  font-family: var(--mono); font-size: 10px; color: var(--muted2);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;
+}
+.stat-value {
+  font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--text);
+}
+.stat-value.c-accent  { color: var(--accent); }
+.stat-value.c-accent2 { color: var(--accent2); }
+.stat-sub { font-size: 11px; color: var(--muted2); margin-top: 2px; }
 
-  .folder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .folder-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 20px 22px;
-    display: flex; flex-direction: column; gap: 8px;
-    text-decoration: none; color: inherit;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .folder-card:hover { border-color: var(--border2); background: var(--surface2); }
-  .folder-chip {
-    display: inline-flex; align-self: flex-start;
-    font-family: var(--mono); font-size: 10px; font-weight: 700;
-    padding: 3px 8px; border-radius: 4px; border: 1px solid;
-  }
-  .folder-name { font-size: 15px; font-weight: 600; color: var(--text); }
-  .folder-desc { font-size: 13px; color: var(--muted); }
+.section-title {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  color: var(--muted2); text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* ── Folder View (file list) ── */
-  .file-list { display: flex; flex-direction: column; gap: 5px; }
-  .file-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 18px; border-radius: 8px;
-    background: var(--surface); border: 1px solid var(--border);
-    text-decoration: none; color: inherit;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .file-row:hover { border-color: rgba(123,255,192,0.3); background: rgba(123,255,192,0.04); }
-  .fr-icon { font-family: var(--mono); font-size: 11px; flex-shrink: 0; width: 28px; }
-  .fr-name { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; }
-  .fr-ext  { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-  .fr-gh {
-    display: flex; align-items: center; justify-content: center;
-    width: 26px; height: 26px; border-radius: 6px; flex-shrink: 0;
-    color: var(--muted); text-decoration: none;
-    border: 1px solid transparent;
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-  }
-  .fr-gh:hover { color: var(--text); border-color: var(--border2); background: var(--surface2); }
-  .fr-gh svg { width: 14px; height: 14px; fill: currentColor; }
+.week-strip { display: flex; flex-direction: column; gap: 4px; }
+.strip-row {
+  display: grid;
+  grid-template-columns: 42px 1fr 72px 64px;
+  align-items: center; gap: 10px;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 14px;
+  text-decoration: none; color: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+.strip-row:hover { border-color: var(--border-dark); background: var(--sb-bg); }
+.strip-row.current { border-color: rgba(99,102,241,0.35); background: rgba(99,102,241,0.02); }
+.sr-num   { font-family: var(--mono); font-size: 10px; color: var(--muted2); }
+.sr-title { font-size: 12px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 1px; }
+.sr-chap  { font-family: var(--mono); font-size: 10px; color: var(--accent2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sr-date  { font-family: var(--mono); font-size: 10px; color: var(--muted2); }
+.sr-badge-col { display: flex; justify-content: flex-end; }
 
-  /* ── Reader View ── */
-  .reader-header {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    gap: 12px; margin-bottom: 24px;
-  }
-  .reader-title { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--accent); }
-  .reader-meta  { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .reader-gh {
-    display: flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
-    color: var(--muted); text-decoration: none; border: 1px solid var(--border);
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .reader-gh:hover { color: var(--text); border-color: var(--border2); }
-  .reader-gh svg { width: 16px; height: 16px; fill: currentColor; }
+.badge {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  padding: 2px 7px; border-radius: 100px; border: 1px solid; white-space: nowrap;
+}
+.badge-done     { color: var(--muted2);          border-color: var(--border);               background: var(--sb-bg); }
+.badge-current  { color: var(--current-color);   border-color: rgba(99,102,241,0.3);        background: rgba(99,102,241,0.07); }
+.badge-upcoming { color: var(--muted2);           border-color: var(--border);               background: #fff; }
 
-  /* ── Markdown ── */
-  .md-content { line-height: 1.8; font-size: 14px; color: var(--text); }
-  .md-content h1 { font-family: var(--mono); font-size: 20px; color: var(--accent); margin: 0 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-  .md-content h2 { font-family: var(--mono); font-size: 15px; color: var(--accent2); margin: 24px 0 10px; }
-  .md-content h3 { font-size: 14px; font-weight: 700; color: var(--text); margin: 16px 0 8px; }
-  .md-content p  { color: var(--muted); margin-bottom: 12px; }
-  .md-content strong { color: var(--text); font-weight: 600; }
-  .md-content ul, .md-content ol { padding-left: 20px; margin-bottom: 12px; color: var(--muted); }
-  .md-content li { margin-bottom: 4px; }
-  .md-content code { font-family: var(--mono); font-size: 12px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--accent3); }
-  .md-content pre { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin-bottom: 14px; }
-  .md-content pre code { background: none; border: none; padding: 0; color: var(--accent2); font-size: 13px; }
-  .md-content blockquote { border-left: 3px solid var(--accent); padding: 8px 14px; background: rgba(123,255,192,0.04); border-radius: 0 6px 6px 0; margin-bottom: 12px; color: var(--muted); }
-  .md-content hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
-  .md-content a { color: var(--accent2); }
-  .md-content table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 13px; }
-  .md-content th { background: var(--surface2); padding: 8px 12px; text-align: left; border: 1px solid var(--border); color: var(--text); font-family: var(--mono); font-size: 11px; }
-  .md-content td { padding: 8px 12px; border: 1px solid var(--border); color: var(--muted); }
+/* ── Week View ── */
+.week-header { margin-bottom: 22px; }
+.week-num-display {
+  font-family: var(--mono); font-size: 52px; font-weight: 700;
+  color: var(--border); line-height: 1; margin-bottom: 0;
+  user-select: none; letter-spacing: -2px;
+}
+.week-title-display {
+  font-family: var(--mono); font-size: 18px; font-weight: 700;
+  color: var(--text); margin-bottom: 5px;
+}
+.week-chapter-display { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.week-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.week-date { font-family: var(--mono); font-size: 10px; color: var(--muted2); }
+.week-tag {
+  font-family: var(--mono); font-size: 9px;
+  padding: 2px 7px; border-radius: 4px;
+  background: var(--sb-bg); border: 1px solid var(--border); color: var(--muted);
+}
 
-  /* ── Utility ── */
-  .loading { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 32px 0; animation: pulse 1s ease infinite alternate; }
-  .empty   { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 32px 0; }
-  .fade-in { animation: fadeIn 0.25s ease both; }
+.folder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.folder-card {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 7px;
+  text-decoration: none; color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.folder-card:hover { border-color: var(--border-dark); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+.folder-chip {
+  display: inline-flex; align-self: flex-start;
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  padding: 2px 6px; border-radius: 4px; border: 1px solid;
+}
+.folder-card-name { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--text); }
+.folder-card-desc { font-size: 12px; color: var(--muted); }
 
-  @keyframes blink   { 0%,100%{opacity:1} 50%{opacity:.2} }
-  @keyframes pulse   { from{opacity:.4} to{opacity:1} }
-  @keyframes fadeIn  { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+/* ── Folder View ── */
+.view-title { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.view-path  { font-family: var(--mono); font-size: 11px; color: var(--muted2); margin-bottom: 18px; }
+
+.file-table { width: 100%; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.file-table-header {
+  display: grid; grid-template-columns: 52px 1fr 160px 90px;
+  padding: 7px 14px;
+  background: var(--sb-bg); border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 10px; color: var(--muted2);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.file-row {
+  display: grid; grid-template-columns: 52px 1fr 160px 90px;
+  align-items: center; padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none; color: inherit;
+  transition: background 0.12s;
+}
+.file-row:last-child { border-bottom: none; }
+.file-row:hover { background: var(--sb-bg); }
+.fr-ext-badge {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  padding: 2px 6px; border-radius: 4px; display: inline-block;
+}
+.fr-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.fr-path { font-family: var(--mono); font-size: 10px; color: var(--muted2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fr-member {
+  display: flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 10px;
+}
+.fr-member-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Reader View ── */
+.reader-header {
+  margin-bottom: 22px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.reader-title {
+  font-family: var(--mono); font-size: 18px; font-weight: 700;
+  color: var(--text); margin-bottom: 6px;
+}
+.reader-meta {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+.reader-author { display: flex; align-items: center; gap: 5px; }
+.reader-author-dot { width: 7px; height: 7px; border-radius: 50%; }
+.reader-gh-link {
+  color: var(--muted2); text-decoration: none;
+  display: flex; align-items: center; gap: 3px;
+  transition: color 0.15s;
+}
+.reader-gh-link:hover { color: var(--text); }
+.reader-gh-link svg { width: 11px; height: 11px; fill: currentColor; }
+
+/* ── Markdown ── */
+.md-content { line-height: 1.85; font-size: 14px; color: var(--text); max-width: 700px; }
+.md-content h1 { font-family: var(--mono); font-size: 19px; color: var(--text); margin: 0 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); font-weight: 700; }
+.md-content h2 { font-family: var(--mono); font-size: 14px; color: var(--accent2); margin: 26px 0 8px; font-weight: 700; }
+.md-content h3 { font-size: 14px; font-weight: 700; color: var(--text); margin: 18px 0 7px; }
+.md-content p  { color: #374151; margin-bottom: 12px; }
+.md-content strong { color: var(--text); font-weight: 600; }
+.md-content ul, .md-content ol { padding-left: 20px; margin-bottom: 12px; color: #374151; }
+.md-content li { margin-bottom: 4px; }
+.md-content code { font-family: var(--mono); font-size: 12px; background: #f3f4f6; border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; color: #dc2626; }
+.md-content pre { background: #1e1e2e; border: 1px solid #2d2d3d; border-radius: 8px; padding: 13px 15px; overflow-x: auto; margin-bottom: 13px; }
+.md-content pre code { background: none; border: none; padding: 0; color: #a8e6cf; font-size: 12px; }
+.md-content blockquote { border-left: 3px solid var(--accent); padding: 8px 13px; background: rgba(22,201,149,0.04); border-radius: 0 6px 6px 0; margin-bottom: 12px; color: var(--muted); }
+.md-content hr { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+.md-content a { color: var(--accent2); }
+.md-content table { width: 100%; border-collapse: collapse; margin-bottom: 13px; font-size: 13px; }
+.md-content th { background: var(--sb-bg); padding: 7px 11px; text-align: left; border: 1px solid var(--border); color: var(--text); font-family: var(--mono); font-size: 10px; }
+.md-content td { padding: 7px 11px; border: 1px solid var(--border); color: #374151; }
+
+/* ── Utility ── */
+.loading { font-family: var(--mono); font-size: 12px; color: var(--muted2); padding: 48px 0; text-align: center; animation: pulse 1s ease infinite alternate; }
+.empty   { font-family: var(--mono); font-size: 12px; color: var(--muted2); padding: 48px 0; text-align: center; }
+.fade-in { animation: fadeIn 0.22s ease both; }
+
+@keyframes blink  { 0%,100%{opacity:1} 50%{opacity:.2} }
+@keyframes pulse  { from{opacity:.35} to{opacity:1} }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
 </style>
 </head>
 <body>
-<div class="grid-bg"></div>
-<div class="layout">
-  <aside class="tree-panel" id="treePanel"></aside>
+
+<div class="top-bar">
+  <span class="top-icon">D!</span>
+  <div class="top-breadcrumb" id="topBreadcrumb">
+    <span class="bc-cur">홈</span>
+  </div>
+  <div class="top-search">
+    <span class="top-search-icon">⌕</span>
+    <input type="text" placeholder="검색..." id="searchInput">
+  </div>
+  <span class="top-progress" id="topProgress">—</span>
+</div>
+
+<div class="week-timeline" id="weekTimeline"></div>
+
+<div class="main-layout" id="mainLayout">
+  <aside class="sidebar" id="sidebar"></aside>
   <main class="content-panel" id="contentPanel">
     <div class="loading">불러오는 중...</div>
   </main>
 </div>
 
+<div class="status-bar" id="statusBar">
+  <div class="sb-stat" id="sbPath"></div>
+  <div class="sb-spacer"></div>
+  <div class="sb-stat" id="sbCount"></div>
+</div>
+
 <script src="/pages/nav.js"></script>
 <script>
-const REPO   = 'seoyeonDev/doit-algorithm-study';
-const BRANCH = 'main';
+const REPO    = 'seoyeonDev/doit-algorithm-study';
+const BRANCH  = 'main';
 const GH_BASE = `https://github.com/${REPO}`;
 const GH_RAW  = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
-const GH_ICON = `<svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>`;
 
 const FOLDERS = {
-  problem:  { chip: 'MD', color: 'var(--accent3)', desc: '주차 문제 파일' },
-  summary:  { chip: 'MD', color: 'var(--accent2)', desc: '스터디원 요약 노트' },
-  practice: { chip: 'PY', color: 'var(--accent)',  desc: '연습 코드' },
-  solved:   { chip: 'PY', color: 'var(--accent)',  desc: '제출 풀이 코드' },
+  problem:  { chip: 'MD', chipColor: '#f0a14e', desc: '주차 문제 파일' },
+  summary:  { chip: 'MD', chipColor: '#5b8af0', desc: '스터디원 요약 노트' },
+  practice: { chip: 'PY', chipColor: '#16c995', desc: '연습 코드' },
+  solved:   { chip: 'PY', chipColor: '#16c995', desc: '제출 풀이 코드' },
 };
+
+// Member color system — assigned in encounter order, stable per name
+const MEMBER_PALETTE = ['#16c995','#5b8af0','#f0a14e','#f07b7b'];
+const _mCache = {};
+let _mIdx = 0;
+function memberColor(name) {
+  const key = name.replace(/\.[^.]+$/, '');
+  if (!_mCache[key]) _mCache[key] = MEMBER_PALETTE[_mIdx++ % MEMBER_PALETTE.length];
+  return _mCache[key];
+}
+
 const STATUS_LABEL = { done: '완료', current: '진행중', upcoming: '예정' };
+function ghApi(p)  { return `/api/github?path=${encodeURIComponent(p)}`; }
+function weekDir(n){ return `week${String(parseInt(n)).padStart(2,'0')}`; }
+function weekNum(w){ return parseInt(w.num.replace('W','')); }
 
-function ghApi(p) { return `/api/github?path=${encodeURIComponent(p)}`; }
-function weekDir(n) { return `week${String(parseInt(n)).padStart(2,'0')}`; }
-
-// ── Hash parser ──
 function parseHash(h) {
   if (!h || h === 'home') return { view: 'home' };
   const p = h.split(':');
@@ -298,7 +529,6 @@ function parseHash(h) {
   return { view: 'home' };
 }
 
-// ── Weeks cache ──
 let _weeks = null;
 async function getWeeks() {
   if (_weeks) return _weeks;
@@ -308,132 +538,181 @@ async function getWeeks() {
 
 function computeStatus(weeks, year) {
   const today = new Date(); today.setHours(0,0,0,0);
-  const thu = weeks.map(w => { const [m,d] = w.date.split('/'); return new Date(year, +m-1, +d); });
+  const dates = weeks.map(w => { const [m,d] = w.date.split('/'); return new Date(year, +m-1, +d); });
   let ci = -1;
-  for (let i = 0; i < thu.length; i++) {
-    const start = i === 0 ? new Date(0) : new Date(thu[i-1].getTime() + 86400000);
-    if (today >= start && today <= thu[i]) { ci = i; break; }
+  for (let i = 0; i < dates.length; i++) {
+    const start = i === 0 ? new Date(0) : new Date(dates[i-1].getTime() + 86400000);
+    if (today >= start && today <= dates[i]) { ci = i; break; }
   }
   if (ci < 0) return weeks.map(w => ({ ...w, status: 'done' }));
   return weeks.map((w,i) => ({ ...w, status: i < ci ? 'done' : i === ci ? 'current' : 'upcoming' }));
 }
 
-function weekNum(w) { return parseInt(w.num.replace('W','')); }
+// ── Top breadcrumb ──
+function setTopBC(items) {
+  document.getElementById('topBreadcrumb').innerHTML = items.map((it,i) =>
+    i < items.length-1
+      ? `<a href="${it.href}">${it.label}</a><span class="bc-sep">/</span>`
+      : `<span class="bc-cur">${it.label}</span>`
+  ).join('');
+}
 
-// ── Breadcrumb ──
+// ── Status bar ──
+function showStatus(pathHTML, countHTML) {
+  document.getElementById('sbPath').innerHTML = pathHTML;
+  document.getElementById('sbCount').innerHTML = countHTML;
+  document.getElementById('statusBar').classList.add('visible');
+  document.getElementById('mainLayout').classList.add('has-status');
+}
+function hideStatus() {
+  document.getElementById('statusBar').classList.remove('visible');
+  document.getElementById('mainLayout').classList.remove('has-status');
+}
+
+// ── Timeline ──
+function renderTimeline(computed) {
+  const done = computed.filter(w => w.status === 'done').length;
+  document.getElementById('topProgress').textContent = `${Math.round(done/computed.length*100)}%`;
+  document.getElementById('weekTimeline').innerHTML = `<div class="tl-segments">
+    ${computed.map(w => {
+      const n = weekNum(w);
+      return `<div class="tl-seg ${w.status}" onclick="location.hash='week:${n}'" title="${w.num} ${w.title}">
+        <div class="tl-seg-bar"></div>
+        <div class="tl-seg-num">${n}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// ── Sidebar ──
+function renderSidebar(state, computed) {
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = `
+    <div class="sb-label">Pages</div>
+    <a class="sb-page-link ${state.view === 'home' ? 'active' : ''}" href="#home">
+      <span class="sb-page-icon">⌂</span>홈
+    </a>
+    <div class="sb-divider"></div>
+    <div class="sb-label">Weeks</div>
+    ${computed.map(w => {
+      const n = weekNum(w);
+      const isOpen = n === state.num && state.view !== 'home';
+      const rowActive = state.view === 'week' && n === state.num;
+      return `
+        <div class="sb-week${isOpen ? ' open' : ''}" data-n="${n}">
+          <div class="sb-week-row${rowActive ? ' active' : ''}">
+            <div class="sb-week-dot ${w.status}"></div>
+            <span class="sb-week-num">${w.num}</span>
+            <span class="sb-week-title">${w.title.replace(/🎉\s*/,'')}</span>
+            <span class="sb-week-chev">▶</span>
+          </div>
+          <div class="sb-subrows">
+            ${Object.keys(FOLDERS).map(f => `
+              <a class="sb-sub-row${isOpen && f === state.folder ? ' active' : ''}"
+                 href="#folder:${n}:${f}">📁 ${f}/</a>`).join('')}
+          </div>
+        </div>`;
+    }).join('')}`;
+
+  sb.querySelectorAll('.sb-week').forEach(el => {
+    const n = parseInt(el.dataset.n);
+    el.querySelector('.sb-week-row').addEventListener('click', () => {
+      location.hash = `week:${n}`;
+    });
+  });
+}
+
+// ── Content breadcrumb ──
 function bc(items) {
   return `<div class="breadcrumb">${items.map((it,i) =>
     i < items.length-1
-      ? `<a href="${it.href}">${it.label}</a><span class="bc-sep">/</span>`
+      ? `<a href="${it.href}">${it.label}</a><span class="bc-sep"> / </span>`
       : `<span class="bc-cur">${it.label}</span>`
   ).join('')}</div>`;
 }
 
-// ── Tree ──
-async function renderTree(state) {
-  const panel = document.getElementById('treePanel');
-  const { weeks } = await getWeeks();
-
-  panel.innerHTML = `<div class="tree-label">주차 목록</div>`;
-
-  weeks.forEach(w => {
-    const n = weekNum(w);
-    const isOpen = n === state.num;
-    const weekActive = state.view === 'week' && isOpen;
-
-    const el = document.createElement('div');
-    el.className = `tree-week${isOpen ? ' open' : ''}`;
-
-    el.innerHTML = `
-      <div class="tree-week-row${weekActive ? ' active' : ''}">
-        <span class="tw-num">${w.num}</span>
-        <span class="tw-title">${w.title.replace(/🎉\s*/,'')}</span>
-        <span class="tw-chev">▶</span>
-      </div>
-      <div class="tree-subrows">
-        ${Object.keys(FOLDERS).map(f => `
-          <a class="tree-sub-row${state.view !== 'home' && isOpen && f === state.folder ? ' active' : ''}"
-             href="#folder:${n}:${f}">
-            <span class="sub-icon">📁</span><span>${f}/</span>
-          </a>`).join('')}
-      </div>`;
-
-    el.querySelector('.tree-week-row').addEventListener('click', () => {
-      location.hash = `week:${n}`;
-    });
-
-    panel.appendChild(el);
-  });
-}
-
-// ── Content ──
 const content = document.getElementById('contentPanel');
 
-async function renderContent(state) {
-  const { weeks, year } = await getWeeks();
-  const computed = computeStatus(weeks, year);
-
-  if (state.view === 'home') {
-    renderHome(computed);
-  } else {
-    const w = computed.find(x => weekNum(x) === state.num);
-    if (!w) { content.innerHTML = `<div class="empty">주차를 찾을 수 없어요.</div>`; return; }
-    if (state.view === 'week')   renderWeek(state.num, w);
-    if (state.view === 'folder') renderFolder(state.num, state.folder, w);
-    if (state.view === 'file')   renderFile(state.num, state.folder, state.file, w);
-  }
-}
-
+// ── Home ──
 function renderHome(computed) {
-  content.innerHTML = `
-    <div class="fade-in">
-      <div class="home-tag">알고리즘 스터디</div>
+  hideStatus();
+  setTopBC([{label:'홈'}]);
+  const done = computed.filter(w => w.status === 'done').length;
+  const cur  = computed.find(w => w.status === 'current');
+
+  content.innerHTML = `<div class="fade-in">
+    <div class="home-hero">
+      <div class="home-tag">알고리즘 스터디 2026</div>
       <h1 class="home-title"><span class="hl1">Do it!</span> 자료구조와 함께<br>배우는 <span class="hl2">알고리즘</span> 입문</h1>
-      <p class="home-sub">파이썬 편 · 2025.04.13 ~ 07.31 · 매주 목요일 20:00</p>
-      <div class="week-strip">
-        ${computed.map(w => {
-          const n = weekNum(w);
-          return `
-            <a class="strip-row ${w.status}" href="#week:${n}">
-              <div class="sr-num">${w.num}</div>
-              <div class="sr-body">
-                <div class="sr-title">${w.title}</div>
-                <div class="sr-chap">${w.chapter}</div>
-              </div>
-              <div class="sr-date">${w.date}</div>
-              <div class="sr-badge">
-                <span class="badge badge-${w.status}">${STATUS_LABEL[w.status]}</span>
-              </div>
-            </a>`;
-        }).join('')}
+      <p class="home-sub">파이썬 편 · 2026.04.09 ~ 08.06 · 매주 목요일</p>
+    </div>
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="stat-label">완료된 주차</div>
+        <div class="stat-value c-accent">${done}</div>
+        <div class="stat-sub">/ 18주 전체</div>
       </div>
-    </div>`;
+      <div class="stat-card">
+        <div class="stat-label">현재 주차</div>
+        <div class="stat-value">${cur ? cur.num : '—'}</div>
+        <div class="stat-sub">${cur ? cur.title.replace(/🎉\s*/,'') : '완료'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">멤버</div>
+        <div class="stat-value c-accent2">4</div>
+        <div class="stat-sub">명 참여</div>
+      </div>
+    </div>
+    <div class="section-title">전체 주차</div>
+    <div class="week-strip">
+      ${computed.map(w => {
+        const n = weekNum(w);
+        return `<a class="strip-row ${w.status}" href="#week:${n}">
+          <div class="sr-num">${w.num}</div>
+          <div>
+            <div class="sr-title">${w.title}</div>
+            <div class="sr-chap">${w.chapter}</div>
+          </div>
+          <div class="sr-date">${w.date}</div>
+          <div class="sr-badge-col"><span class="badge badge-${w.status}">${STATUS_LABEL[w.status]}</span></div>
+        </a>`;
+      }).join('')}
+    </div>
+  </div>`;
 }
 
+// ── Week ──
 function renderWeek(num, w) {
-  content.innerHTML = `
-    <div class="fade-in">
-      ${bc([{label:'home',href:'#home'},{label:`${w.num} · ${w.title}`}])}
-      <div class="view-title">${w.num} — ${w.title}</div>
-      <div class="view-sub">
-        <span>${w.chapter}</span>
-        <span>·</span>
-        <span>${w.date}</span>
+  hideStatus();
+  setTopBC([{label:'홈',href:'#home'},{label:w.num}]);
+  content.innerHTML = `<div class="fade-in">
+    ${bc([{label:'홈',href:'#home'},{label:w.num}])}
+    <div class="week-header">
+      <div class="week-num-display">${w.num}</div>
+      <div class="week-title-display">${w.title}</div>
+      <div class="week-chapter-display">${w.chapter}</div>
+      <div class="week-meta">
+        <span class="week-date">${w.date}</span>
         <span class="badge badge-${w.status}">${STATUS_LABEL[w.status]}</span>
+        ${w.tags.map(t=>`<span class="week-tag">#${t}</span>`).join('')}
       </div>
-      <div class="folder-grid">
-        ${Object.entries(FOLDERS).map(([name, meta]) => `
-          <a class="folder-card" href="#folder:${num}:${name}">
-            <span class="folder-chip" style="color:${meta.color};border-color:${meta.color}40">${meta.chip}</span>
-            <div class="folder-name">${name}/</div>
-            <div class="folder-desc">${meta.desc}</div>
-          </a>`).join('')}
-      </div>
-    </div>`;
+    </div>
+    <div class="section-title">폴더</div>
+    <div class="folder-grid">
+      ${Object.entries(FOLDERS).map(([name, meta]) => `
+        <a class="folder-card" href="#folder:${num}:${name}">
+          <span class="folder-chip" style="color:${meta.chipColor};border-color:${meta.chipColor}40;background:${meta.chipColor}12">${meta.chip}</span>
+          <div class="folder-card-name">${name}/</div>
+          <div class="folder-card-desc">${meta.desc}</div>
+        </a>`).join('')}
+    </div>
+  </div>`;
 }
 
+// ── Folder ──
 async function renderFolder(num, folderName, w) {
   content.innerHTML = `<div class="loading">불러오는 중...</div>`;
+  setTopBC([{label:'홈',href:'#home'},{label:w.num,href:`#week:${num}`},{label:`${folderName}/`}]);
 
   const dir = weekDir(num);
   let files = [];
@@ -441,94 +720,129 @@ async function renderFolder(num, folderName, w) {
     const res = await fetch(ghApi(`repos/${REPO}/contents/${dir}/${folderName}?ref=${BRANCH}`));
     if (res.ok) {
       const data = await res.json();
-      files = Array.isArray(data) ? data.filter(f => f.type === 'file' && f.name !== '.gitkeep') : [];
+      files = Array.isArray(data) ? data.filter(f => f.type==='file' && f.name!=='.gitkeep') : [];
     }
   } catch {}
 
-  const meta = FOLDERS[folderName] || { chip:'FILE', color:'var(--muted)' };
+  const meta = FOLDERS[folderName] || { chip:'FILE', chipColor:'#6b7280' };
+  showStatus(`<strong>${dir}/${folderName}</strong>`, `<strong>${files.length}</strong> 파일`);
 
-  content.innerHTML = `
-    <div class="fade-in">
-      ${bc([
-        {label:'home',href:'#home'},
-        {label:w.num,href:`#week:${num}`},
-        {label:`${folderName}/`}
-      ])}
-      <div class="view-title" style="color:var(--accent2)">${folderName}/</div>
-      <div class="view-sub"><span style="opacity:.6">${dir}/${folderName}</span></div>
-      <div class="file-list">
-        ${files.length === 0
-          ? '<div class="empty">파일이 없어요.</div>'
-          : files.map(f => {
-              const ext = f.name.split('.').pop();
-              const nameNoExt = f.name.slice(0, -(ext.length+1));
-              const isMarkdown = ext === 'md';
-              const href = isMarkdown ? `#file:${num}:${folderName}:${f.name}` : f.html_url;
-              const target = isMarkdown ? '' : 'target="_blank" rel="noopener"';
-              return `
-                <a class="file-row" href="${href}" ${target}>
-                  <span class="fr-icon" style="color:${meta.color}">${ext.toUpperCase()}</span>
-                  <span class="fr-name">${nameNoExt}</span>
-                  <span class="fr-ext">.${ext}</span>
-                  <a class="fr-gh" href="${f.html_url}" target="_blank" rel="noopener"
-                     title="GitHub에서 보기" onclick="event.stopPropagation()">${GH_ICON}</a>
-                </a>`;
-            }).join('')}
-      </div>
-    </div>`;
+  content.innerHTML = `<div class="fade-in">
+    ${bc([{label:'홈',href:'#home'},{label:w.num,href:`#week:${num}`},{label:`${folderName}/`}])}
+    <div class="view-title">${folderName}/</div>
+    <div class="view-path">${dir}/${folderName}</div>
+    ${files.length === 0
+      ? '<div class="empty">파일이 없어요.</div>'
+      : `<div class="file-table">
+          <div class="file-table-header">
+            <div>타입</div><div>파일명</div><div>경로</div><div>작성자</div>
+          </div>
+          ${files.map(f => {
+            const ext = f.name.split('.').pop();
+            const nameNoExt = f.name.slice(0, -(ext.length+1));
+            const isMd = ext === 'md';
+            const href = isMd ? `#file:${num}:${folderName}:${f.name}` : f.html_url;
+            const target = isMd ? '' : 'target="_blank" rel="noopener"';
+            const c = meta.chipColor;
+            const mc = memberColor(f.name);
+            return `<a class="file-row" href="${href}" ${target}>
+              <div><span class="fr-ext-badge" style="color:${c};background:${c}15;border:1px solid ${c}35">${ext.toUpperCase()}</span></div>
+              <div class="fr-name">${nameNoExt}</div>
+              <div class="fr-path">${dir}/${folderName}/${f.name}</div>
+              <div class="fr-member">
+                <div class="fr-member-dot" style="background:${mc}"></div>
+                <span style="color:${mc}">${nameNoExt}</span>
+              </div>
+            </a>`;
+          }).join('')}
+        </div>`}
+  </div>`;
 }
 
+// ── File reader ──
 async function renderFile(num, folderName, fileName, w) {
   content.innerHTML = `<div class="loading">불러오는 중...</div>`;
-
   const dir = weekDir(num);
   const rawUrl    = `${GH_RAW}/${dir}/${folderName}/${fileName}`;
   const githubUrl = `${GH_BASE}/blob/${BRANCH}/${dir}/${folderName}/${fileName}`;
 
-  let text = '', err = false;
+  setTopBC([
+    {label:'홈',href:'#home'},
+    {label:w.num,href:`#week:${num}`},
+    {label:`${folderName}/`,href:`#folder:${num}:${folderName}`},
+    {label:fileName}
+  ]);
+
+  let text='', err=false;
   try {
     const res = await fetch(rawUrl);
     if (res.ok) text = await res.text(); else err = true;
-  } catch { err = true; }
+  } catch { err=true; }
 
   const ext = fileName.split('.').pop();
   const nameNoExt = fileName.slice(0, -(ext.length+1));
-  const isMarkdown = ext === 'md';
+  const isMd = ext === 'md';
+  const mc = memberColor(fileName);
+  const wordCount = text.split(/\s+/).filter(Boolean).length;
+  const readMin = Math.max(1, Math.round(wordCount/200));
 
-  let body;
-  if (err) {
-    body = `<div class="empty">파일을 불러올 수 없어요.</div>`;
-  } else if (isMarkdown) {
-    body = `<div class="md-content">${marked.parse(text)}</div>`;
-  } else {
-    const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    body = `<div class="md-content"><pre><code>${escaped}</code></pre></div>`;
-  }
+  showStatus(`<strong>${dir}/${folderName}/${fileName}</strong>`, `${wordCount}단어 · ~${readMin}분`);
 
-  content.innerHTML = `
-    <div class="fade-in">
-      ${bc([
-        {label:'home',href:'#home'},
-        {label:w.num,href:`#week:${num}`},
-        {label:`${folderName}/`,href:`#folder:${num}:${folderName}`},
-        {label:fileName}
-      ])}
-      <div class="reader-header">
-        <div>
-          <div class="reader-title">${nameNoExt}</div>
-          <div class="reader-meta">${dir}/${folderName}/${fileName}</div>
+  const body = err
+    ? `<div class="empty">파일을 불러올 수 없어요.</div>`
+    : isMd
+      ? `<div class="md-content">${marked.parse(text)}</div>`
+      : `<div class="md-content"><pre><code>${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></pre></div>`;
+
+  content.innerHTML = `<div class="fade-in">
+    ${bc([
+      {label:'홈',href:'#home'},
+      {label:w.num,href:`#week:${num}`},
+      {label:`${folderName}/`,href:`#folder:${num}:${folderName}`},
+      {label:fileName}
+    ])}
+    <div class="reader-header">
+      <div class="reader-title">${nameNoExt}</div>
+      <div class="reader-meta">
+        <div class="reader-author">
+          <div class="reader-author-dot" style="background:${mc}"></div>
+          <span style="color:${mc}">${nameNoExt}</span>
         </div>
-        <a class="reader-gh" href="${githubUrl}" target="_blank" rel="noopener" title="GitHub에서 보기">${GH_ICON}</a>
+        <span>·</span>
+        <span>~${readMin}분</span>
+        <span>·</span>
+        <a class="reader-gh-link" href="${githubUrl}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
       </div>
-      ${body}
-    </div>`;
+    </div>
+    ${body}
+  </div>`;
 }
 
 // ── Router ──
 async function route() {
   const state = parseHash(location.hash.slice(1));
   content.innerHTML = `<div class="loading">불러오는 중...</div>`;
-  await Promise.all([renderTree(state), renderContent(state)]);
+
+  const { weeks, year } = await getWeeks();
+  const computed = computeStatus(weeks, year);
+
+  renderTimeline(computed);
+  renderSidebar(state, computed);
+
+  if (state.view === 'home') {
+    renderHome(computed);
+    return;
+  }
+
+  const w = computed.find(x => weekNum(x) === state.num);
+  if (!w) { content.innerHTML = `<div class="empty">주차를 찾을 수 없어요.</div>`; return; }
+
+  if (state.view === 'week')   renderWeek(state.num, w);
+  if (state.view === 'folder') await renderFolder(state.num, state.folder, w);
+  if (state.view === 'file')   await renderFile(state.num, state.folder, state.file, w);
 }
 
 window.addEventListener('hashchange', route);
