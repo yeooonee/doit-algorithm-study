@@ -209,9 +209,10 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 .feed-row .what .path { font-family: var(--mono); font-size: 11px; color: var(--mute); margin-left: 5px; }
 .feed-row .by { font-size: 11.5px; color: var(--ink-3); display: flex; align-items: center; gap: 5px; }
 .avatar {
-  width: 18px; height: 18px; border-radius: 50%;
-  display: inline-grid; place-items: center;
+  border-radius: 99px; padding: 0 6px; height: 18px;
+  display: inline-flex; align-items: center;
   font-size: 10px; color: #fff; font-weight: 600; font-family: var(--mono);
+  white-space: nowrap;
 }
 
 /* week page */
@@ -745,7 +746,7 @@ async function renderHome(computed) {
           <span class="path">${a.path}</span>
         </div>
         <div class="by">
-          <span class="avatar" style="background:${a.member.color}">${a.member.name[0]}</span>
+          <span class="avatar" style="background:${a.member.color}">${a.member.name}</span>
           ${a.member.name}
         </div>
       </div>`).join('')}
@@ -788,7 +789,7 @@ function renderProblems(computed) {
         return cached.map(f => `<div class="feed-row" data-go="file:${n}:solved:${f.name}">
           <div class="when">${weekDir(n)}</div>
           <div class="what"><span class="icon">${ICONS.py}</span><span class="ttl">${f.name.replace(/\.py$/,'')}</span><span class="path">${weekDir(n)}/solved/${f.name}</span></div>
-          <div class="by"><span class="avatar" style="background:${memberOf(f.name).color}">${memberOf(f.name).name[0]}</span>${memberOf(f.name).name}</div>
+          <div class="by"><span class="avatar" style="background:${memberOf(f.name).color}">${memberOf(f.name).name}</span></div>
         </div>`).join('');
       }).join('')||'<div style="padding:32px;text-align:center;color:var(--mute);font-family:var(--mono);font-size:13px">먼저 주차를 방문하면 파일 목록이 로드됩니다.</div>'}
     </div>`;
@@ -882,7 +883,7 @@ async function renderFolder(num, folderName, computed) {
                 <span class="path">${dir}/${folderName}/${f.name}</span>
               </div>
               <div class="by">
-                <span class="avatar" style="background:${m.color}">${m.name[0]}</span>
+                <span class="avatar" style="background:${m.color}">${m.name}</span>
                 ${m.name}
               </div>
             </div>`;
@@ -921,7 +922,7 @@ async function renderFile(num, folderName, fileName, computed) {
   const filebar = `<div class="filebar">
     <span class="path">${dir}/${folderName}/${fileName}</span>
     <span class="meta">
-      <span><span class="avatar" style="background:${m.color}">${m.name[0]}</span>${m.name}</span>
+      <span><span class="avatar" style="background:${m.color}">${m.name}</span></span>
       ${metaRight}
     </span>
   </div>`;
