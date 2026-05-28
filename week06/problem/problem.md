@@ -1,11 +1,9 @@
 # Week 문제
 
 ## 출제자
--
+- 김혜원
 
-## 문제
-- 플랫폼:
-- 링크:
+## 기능개발(필수)
+- [42586](https://school.programmers.co.kr/learn/courses/30/lessons/42586)
+- LV.2
 
-## 풀이 기한
--
