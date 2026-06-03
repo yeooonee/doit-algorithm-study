@@ -3,9 +3,6 @@
 ## 출제자
 -
 
-## 문제
-- 플랫폼:
-- 링크:
-
-## 풀이 기한
--
+## 타겟 넘버 (필수)
+- [43165](https://school.programmers.co.kr/learn/courses/30/lessons/43165)
+- Lv.2
