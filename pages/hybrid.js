@@ -60,8 +60,24 @@ async function getWeeks() {
   return _weeks;
 }
 
-let _fileCache    = {};
+let _fileCache     = {};
 let _activityCache = null;
+let _committerCache = {};
+
+async function getFileCommitter(filePath) {
+  if (_committerCache[filePath] !== undefined) return _committerCache[filePath];
+  try {
+    const res = await fetch(ghApi(`repos/${REPO}/commits?path=${encodeURIComponent(filePath)}&ref=${BRANCH}&per_page=1`));
+    if (!res.ok) { _committerCache[filePath] = null; return null; }
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) { _committerCache[filePath] = null; return null; }
+    const ghName = data[0].commit?.author?.name || data[0].author?.login || '';
+    const m = MEMBERS.find(x => ghName.includes(x.name)) || memberByGitHub(ghName);
+    _committerCache[filePath] = m;
+    return m;
+  } catch { _committerCache[filePath] = null; return null; }
+}
+
 async function getFiles(num, folder) {
   const key = `${num}:${folder}`;
   if (_fileCache[key]) return _fileCache[key];
@@ -476,11 +492,14 @@ function renderProblems(computed) {
         const n = weekNum(w);
         const cached = _fileCache[`${n}:solved`] || [];
         if (!cached.length) return '';
-        return cached.map(f => `<div class="feed-row" data-go="file:${n}:solved:${f.name}">
-          <div class="when">${weekDir(n)}</div>
-          <div class="what"><span class="icon">${ICONS.py}</span><span class="ttl">${f.name.replace(/\.py$/,'')}</span><span class="path">${weekDir(n)}/solved/${f.name}</span></div>
-          <div class="by"><span class="avatar" style="background:${memberOf(f.name).color}">${memberOf(f.name).name[0]}</span>${memberOf(f.name).name}</div>
-        </div>`).join('');
+        return cached.map(f => {
+          const m = _committerCache[`${weekDir(n)}/solved/${f.name}`] || memberOf(f.name);
+          return `<div class="feed-row" data-go="file:${n}:solved:${f.name}">
+            <div class="when">${weekDir(n)}</div>
+            <div class="what"><span class="icon">${ICONS.py}</span><span class="ttl">${f.name.replace(/\.py$/,'')}</span><span class="path">${weekDir(n)}/solved/${f.name}</span></div>
+            <div class="by"><span class="avatar" style="background:${m.color}">${m.name[0]}</span>${m.name}</div>
+          </div>`;
+        }).join('');
       }).join('')||'<div style="padding:32px;text-align:center;color:var(--mute);font-family:var(--mono);font-size:13px">먼저 주차를 방문하면 파일 목록이 로드됩니다.</div>'}
     </div>`;
   bindGo();
@@ -548,6 +567,10 @@ async function renderFolder(num, folderName, computed) {
   const files = await getFiles(num, folderName);
   const dir   = weekDir(num);
 
+  const committers = await Promise.all(
+    files.map(f => getFileCommitter(`${dir}/${folderName}/${f.name}`))
+  );
+
   document.getElementById('main').innerHTML = `
     <div class="pagehead">
       <div>
@@ -558,13 +581,12 @@ async function renderFolder(num, folderName, computed) {
     ${files.length === 0
       ? `<div class="empty">아직 파일이 없습니다.</div>`
       : `<div class="feed">
-          ${files.map(f => {
+          ${files.map((f, i) => {
             const ext = f.name.split('.').pop();
             const nameNoExt = f.name.slice(0, -(ext.length+1));
-            const isMd = ext === 'md';
             const clickRoute = `file:${num}:${folderName}:${f.name}`;
-            const m = memberOf(f.name);
-            return `<div class="feed-row" ${clickRoute ? `data-go="${clickRoute}"` : ``}>
+            const m = committers[i] || memberOf(f.name);
+            return `<div class="feed-row" data-go="${clickRoute}">
               <div class="when" style="font-family:var(--mono);text-transform:uppercase">.${ext}</div>
               <div class="what">
                 <span class="icon">${fileIcon(f.name)}</span>
