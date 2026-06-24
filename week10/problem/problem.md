@@ -1,11 +1,8 @@
 # Week 문제
 
 ## 출제자
--
+- 김혜원
 
 ## 문제
-- 플랫폼:
-- 링크:
-
-## 풀이 기한
--
+- [42748](https://school.programmers.co.kr/learn/courses/30/lessons/42748)
+- Lv.2
