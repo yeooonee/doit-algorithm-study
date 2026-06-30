@@ -4,5 +4,5 @@
 - 김혜원
 
 ## 문제
-- [42748](https://school.programmers.co.kr/learn/courses/30/lessons/42748)
+- [42746](https://school.programmers.co.kr/learn/courses/30/lessons/42746)
 - Lv.2
