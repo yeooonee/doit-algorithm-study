@@ -1,0 +1,28 @@
+def solution(s):
+    answer = True
+    pcnt = 0
+    ycnt = 0
+    
+    # [실행] 버튼을 누르면 출력 값을 볼 수 있습니다.
+    print('Hello Python')
+    # 문자열 모두 소문자로 변경
+    text = s.lower()
+    # 문자열 순회
+    for i in text:
+        # p 일 때
+        if i == 'p':
+            pcnt += 1
+        # y 일 때
+        if i == 'y':
+            ycnt += 1
+            
+    # p = y 일떄 or p,y=0 일때 
+    if (pcnt == ycnt or (pcnt == 0 and ycnt == 0)):
+        #true
+        answer = True
+    # else 
+    else:
+        answer = False
+        #false
+
+    return answer
